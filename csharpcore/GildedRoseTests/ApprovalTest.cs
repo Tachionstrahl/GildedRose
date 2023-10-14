@@ -4,6 +4,7 @@ using System.Text;
 using ApprovalTests;
 using ApprovalTests.Reporters;
 using NUnit.Framework;
+using Xunit;
 
 namespace GildedRoseTests;
 
@@ -11,7 +12,7 @@ namespace GildedRoseTests;
 [TestFixture]
 public class ApprovalTest
 {
-    [Test]
+    [Fact]
     public void ThirtyDays()
     {
         StringBuilder fakeOutput = new StringBuilder();
