@@ -4,4 +4,10 @@
     <TargetFramework>net7.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="UpdateStrategies\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UpdateStrategies\" />
+  </ItemGroup>
 </Project>
