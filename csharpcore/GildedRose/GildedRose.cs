@@ -20,52 +20,67 @@ public class GildedRose
     {
         foreach (var item in _items)
         {
+            if (IsLegendary(item))
+            {
+                continue;
+            }
+
+            item.SellIn--;
+
             switch (item.Name)
             {
                 case NameBackstagePasses:
-                    IncrementQuality(item);
-
-                    if (item.SellIn <= DaysWithinQualityIncrementsTwofold)
-                    {
-                        IncrementQuality(item);
-                    }
-
-                    if (item.SellIn <= DaysWithinQualityIncrementsThreefold)
-                    {
-                        IncrementQuality(item);
-
-                    }
+                    HandleBackstagePasses(item);
                     break;
                 case NameAgedBrie:
-                    IncrementQuality(item);
+                    HandleAgedBrie(item);
                     break;
                 default:
                     DecrementQuality(item);
+                    if (HasSellDatePassed(item))
+                        DecrementQuality(item);
                     break;
             }
-
-            if (item.Name != NameSulfuras)
-            {
-                item.SellIn--;
-            }
-
-            if (item.SellIn < 0)
-            {
-                if (item.Name == NameAgedBrie)
-                {
-                    IncrementQuality(item);
-                }
-                else if (item.Name == NameBackstagePasses)
-                {
-                    item.Quality = 0;
-                }
-                else
-                {
-                    DecrementQuality(item);
-                }
-
-            }
         }
+    }
+
+    private static void HandleAgedBrie(Item item)
+    {
+        IncrementQuality(item);
+        if (HasSellDatePassed(item))
+            IncrementQuality(item);
+    }
+
+    private static void HandleBackstagePasses(Item item)
+    {
+        if (HasSellDatePassed(item))
+        {
+            item.Quality = 0;
+            return;
+        }
+        IncrementQuality(item);
+
+        if (item.SellIn < DaysWithinQualityIncrementsTwofold)
+        {
+            IncrementQuality(item);
+        }
+
+        if (item.SellIn < DaysWithinQualityIncrementsThreefold)
+        {
+            IncrementQuality(item);
+
+        }
+
+    }
+
+    private static bool IsLegendary(Item item)
+    {
+        return item.Name == NameSulfuras;
+    }
+
+    private static bool HasSellDatePassed(Item item)
+    {
+        return item.SellIn < 0;
     }
 
     private static void IncrementQuality(Item item)
@@ -76,7 +91,7 @@ public class GildedRose
 
     private static void DecrementQuality(Item item)
     {
-        if (item.Quality > 0 && item.Name != NameSulfuras)
+        if (item.Quality > 0)
             item.Quality--;
     }
 }
