@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GildedRoseKata;
 
@@ -7,6 +8,7 @@ public class GildedRose
     private const string NameSulfuras = "Sulfuras, Hand of Ragnaros";
     private const string NameAgedBrie = "Aged Brie";
     private const string NameBackstagePasses = "Backstage passes to a TAFKAL80ETC concert";
+    private const string NameConjured = "Conjured Mana Cake";
     private const int DaysWithinQualityIncrementsTwofold = 10;
     private const int DaysWithinQualityIncrementsThreefold = 5;
     private readonly IList<Item> _items;
@@ -35,6 +37,9 @@ public class GildedRose
                 case NameAgedBrie:
                     HandleAgedBrie(item);
                     break;
+                case NameConjured:
+                    HandleConjured(item);
+                    break;
                 default:
                     DecrementQuality(item);
                     if (HasSellDatePassed(item))
@@ -42,6 +47,12 @@ public class GildedRose
                     break;
             }
         }
+    }
+
+    private void HandleConjured(Item item)
+    {
+        DecrementQuality(item);
+        DecrementQuality(item);
     }
 
     private static void HandleAgedBrie(Item item)
@@ -58,6 +69,7 @@ public class GildedRose
             item.Quality = 0;
             return;
         }
+
         IncrementQuality(item);
 
         if (item.SellIn < DaysWithinQualityIncrementsTwofold)

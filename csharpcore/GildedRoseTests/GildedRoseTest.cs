@@ -110,6 +110,15 @@ public class GildedRoseTest
         Assert.Equal(8, items[0].Quality);
     }
 
+    [Fact]
+    public void Conjured_Should_Decrease_Twofold()
+    {
+        IList<Item> items = new List<Item> { new Item { Name = "Conjured Mana Cake", SellIn = 1, Quality = 2 } };
+        GildedRose app = new GildedRose(items);
+        app.UpdateQuality();
+        Assert.Equal(0, items[0].Quality);
+    }
+
 
 
 }
